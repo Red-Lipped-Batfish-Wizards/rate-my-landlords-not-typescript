@@ -13,6 +13,7 @@ function App() {
         <Switch>
           <Route exact path = "/" component={SearchBar}/>
           <Route exact path = "/searchresults" render={(props) => <SearchResult {...props}/>}/>
+          <Route exact path = "/landlordprofile" render={(props) => <LandLordProfile {...props}/>}/>
         </Switch>
       </Router>
     </div>

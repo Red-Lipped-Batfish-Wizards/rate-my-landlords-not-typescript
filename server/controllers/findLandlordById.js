@@ -63,6 +63,8 @@ const findLandordById = async (__, args, context) => {
       })),
     };
 
+
+
     console.log(returnObj);
     return returnObj;
   } catch (err) {
@@ -75,5 +77,4 @@ const findLandordById = async (__, args, context) => {
 module.exports = {
   findLandordById,
 };
-
 
