@@ -3,12 +3,27 @@ import '../Style/App.css';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { GoogleLogin } from 'react-google-login';
 import { QueryObj } from './Utils'
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import { credentialsObj } from '../credentials';
+
+const {
+  GOOGLE_API_KEY,
+  GOOGLE_OAUTH_CLIENT_ID,
+} = credentialsObj;
 
 function SearchBar (){
   let history = useHistory()
   const [value, setValue] = useState(null)
+  const loginButttonRef = useRef();
+  const [authData, setAuthData] = useState({
+    isAuthenticated: false, user: null, token: ''
+  });
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
 
   useEffect(() => {
     console.log(value)
@@ -83,12 +98,20 @@ function SearchBar (){
         <form> */}
           {/* <input type = "search" id="search2" ref={search2Ref} onChange={handleAddressSearch}/> */}
           <GooglePlacesAutocomplete 
-            // apiKey={process.env.GOOGLE_API_KEY}
-            apiKey="AIzaSyBopeNaNuJXhcVfRvUrjnR1UVm0uRmdx3Y"
+            apiKey={GOOGLE_API_KEY}
             selectProps={{value,onChange: setValue}}
             autocompletionRequest={{componentRestrictions: {country: ['us']}}}
           />
         {/* </form> */}
+        <Button ref={loginButttonRef} />
+        <GoogleLogin
+          clientId={GOOGLE_OAUTH_CLIENT_ID}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+          isSignedIn={true}
+        />
       </div>
   );
 }
