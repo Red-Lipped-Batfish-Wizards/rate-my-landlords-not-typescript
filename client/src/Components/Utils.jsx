@@ -44,10 +44,3 @@ export const GET_ALL_LANDLORDS = gql`
   }}
 
 `
-
-
-export interface QueryObj {
-  address: string;
-  city: string;
-  zipcode: string;
-}
