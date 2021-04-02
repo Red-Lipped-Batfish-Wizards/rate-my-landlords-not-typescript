@@ -1,6 +1,13 @@
 const { ApolloServer, gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+  type AuthResponse {
+    token: String
+    name: String
+  }
+  input AuthInput {
+    accessToken: String!
+  }
 
   type Query {
     hello: String 
@@ -11,23 +18,24 @@ const typeDefs = gql`
 
   type Mutation {
     addReview(
-    landlord_id: String
-    streetAddress: String
-    reviewBody: String
-    wouldRentAgain: Boolean
-    friendlinessRating: Int
-    communicationRating: Int
-    responsivenessRating: Int
-    maintenanceRating: Int
-    transactionIssues: Boolean
-    moveInDate: String
-    moveOutDate: String
-    cleanliness: Int
-    neighborsVibes: [String]
-    propertyIssues: [String]
-    noiseLevelRating: Int
+      landlord_id: String
+      streetAddress: String
+      reviewBody: String
+      wouldRentAgain: Boolean
+      friendlinessRating: Int
+      communicationRating: Int
+      responsivenessRating: Int
+      maintenanceRating: Int
+      transactionIssues: Boolean
+      moveInDate: String
+      moveOutDate: String
+      cleanliness: Int
+      neighborsVibes: [String]
+      propertyIssues: [String]
+      noiseLevelRating: Int
     ): AddReviewOutput,
-
+    authFacebook(input: AuthInput!): AuthResponse
+    authGoogle(input: AuthInput!): AuthResponse
   }
 
   type LandlordSearchResult {
@@ -140,8 +148,7 @@ const typeDefs = gql`
     noiseLevelRating: Int
     reviewBody: String
   }
-
-
+  
 `;
 
 module.exports = typeDefs;
