@@ -7,18 +7,18 @@ axios.defaults.headers.common["apikey"] = process.env.ATOM_KEY;
 /*-------------------------------------COMMON HEADERS-------------------------------------*/
 
 const findLandordById = async (__, args, context) => {
-  console.log("function running");
-  console.log(args)
+
   const { id } = args;
   try {
     const data = await context.Landlords.find({ _id: id })
+      .populate("properties")
       .populate({
         path: "reviews",
         populate: {
           path: "reviewedBy",
         },
-      })
-      .populate("properties");
+      });
+
 
     const landlordProfile = data[0];
     const reviews = data[0].reviews;
@@ -45,15 +45,25 @@ const findLandordById = async (__, args, context) => {
       Reviews: reviews.map((review) => ({
         landlordReview: {
           wouldRentAgain: Math.floor(review.landlordReview.wouldRentAgain),
-          friendlinessRating: Math.floor(review.landlordReview.friendlinessRating),
-          communicationRating: Math.floor(review.landlordReview.communicationRating),
-          responsivenessRating: Math.floor(review.landlordReview.responsivenessRating),
-          maintenanceRating: Math.floor(review.landlordReview.maintenanceRating),
-          transactionIssues: Math.floor(review.landlordReview.transactionIssues),
+          friendlinessRating: Math.floor(
+            review.landlordReview.friendlinessRating
+          ),
+          communicationRating: Math.floor(
+            review.landlordReview.communicationRating
+          ),
+          responsivenessRating: Math.floor(
+            review.landlordReview.responsivenessRating
+          ),
+          maintenanceRating: Math.floor(
+            review.landlordReview.maintenanceRating
+          ),
+          transactionIssues: Math.floor(
+            review.landlordReview.transactionIssues
+          ),
         },
         propertyReview: {
-          moveInDate: review.propertyReview.moveInDate,
-          moveOutDate: review.propertyReview.moveOutDate,
+          moveInDate: review.propertyReview.moveInDate.toDateString(),
+          moveOutDate: review.propertyReview.moveOutDate.toDateString(),
           cleanliness: Math.floor(review.propertyReview.cleanliness),
           neighborsVibes: review.propertyReview.neighborsVibes,
           propertyIssues: review.propertyReview.propertyIssues,
@@ -64,18 +74,13 @@ const findLandordById = async (__, args, context) => {
       })),
     };
 
-
-
-    console.log(returnObj);
+ 
     return returnObj;
   } catch (err) {
     console.log(err);
   }
-
-  
 };
 
 module.exports = {
   findLandordById,
 };
-

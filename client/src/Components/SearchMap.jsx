@@ -5,11 +5,12 @@ import { credentialsObj } from '../credentials';
 const {  GOOGLE_API_KEY } = credentialsObj;
 
 const mapStyles = {
-  width: '100%',
-  margin: 'auto'
-  // display: 'flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
+  width: '86%',
+  height: '86%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // margin: 'auto'
 };
 
 function MapContainer(props) {
@@ -20,19 +21,22 @@ function MapContainer(props) {
   console.log(props)
 
   return (
-    <Map
-      google={props.google}
-      zoom={14}
-      style={mapStyles}
-      initialCenter={
-        {
-          lat: latitude,
-          lng: longitude
+    // <div style={{height: '80%', width: '80%', alignContent: 'center'}}>
+      <Map
+        resetBoundsOnResize={true}
+        google={props.google}
+        zoom={14}
+        style={mapStyles}
+        initialCenter={
+          {
+            lat: latitude,
+            lng: longitude
+          }
         }
-      }
-    >
-      <Marker position={{lat: latitude, lng: longitude}}/>
+      >
+        <Marker position={{lat: latitude, lng: longitude}}/>
       </Map>
+    // </div>
   );
 }
 

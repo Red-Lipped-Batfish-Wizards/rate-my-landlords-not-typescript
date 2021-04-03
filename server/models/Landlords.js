@@ -19,7 +19,7 @@ const LandlordsSchema = new mongoose.Schema({
   responsivenessRating: Number, 
   transactionIssue: Number,
   reviews:[{type: ObjectId, ref: 'reviews'}],
-  properties:[{type: ObjectId, ref: 'properties'}]
+  properties:[{type: ObjectId, ref: 'realEstateProperty'}]
 }, options)
 
 module.exports = mongoose.model('landlords', LandlordsSchema)
