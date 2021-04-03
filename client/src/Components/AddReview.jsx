@@ -214,10 +214,7 @@ const AddReview = ({setExample}) => {
                     </Grid>
                     <Divider />
                     <Grid 
-                      container 
-                      // direction="row"
-                      // justify="right"
-                      // alignItems="right" 
+                      container
                       item xs={12} 
                       spacing={3}
                     >
@@ -237,22 +234,27 @@ const AddReview = ({setExample}) => {
                     </Grid>
                     <Divider />
                     <h2>Property Review</h2>
-        
-                    {Object.keys(propertyReviewOpts).map( option => (
-                      <Grid item xs={6} sm={6} key={option}>
-                        <p>{option}</p>
-                        <div className={classes.rating}>
-                          <Rating 
-                          id={landlordReviewOpts[option]}
-                            name={propertyReviewOpts[option]}
-                            value={parseInt(formik.values[propertyReviewOpts[option]])}
-                            precision={1}
-                            onChange={formik.handleChange}
-                            onChangeActive={formik.handleChangeActive}
-                          />
-                        </div>
-                      </Grid>
-                    ))} 
+                    <Grid 
+                      container
+                      item xs={12} 
+                      spacing={3}
+                    >
+                      {Object.keys(propertyReviewOpts).map( option => (
+                        <Grid item xs={6} sm={6} key={option}>
+                          <p>{option}</p>
+                          <div className={classes.rating}>
+                            <Rating 
+                            id={landlordReviewOpts[option]}
+                              name={propertyReviewOpts[option]}
+                              value={parseInt(formik.values[propertyReviewOpts[option]])}
+                              precision={1}
+                              onChange={formik.handleChange}
+                              onChangeActive={formik.handleChangeActive}
+                            />
+                          </div>
+                        </Grid>
+                      ))}
+                    </Grid> 
                     <Button color="primary" variant="contained" type="submit">
                       Submit
                     </Button>  

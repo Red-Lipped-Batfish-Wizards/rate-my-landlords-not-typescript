@@ -15,6 +15,7 @@ function LandLordProfile (props){
   );
 
 
+
   // console.log('landlordprofile data', data);
   // console.log('data', data);
 
@@ -95,17 +96,18 @@ function LandLordProfile (props){
       <Container id='landlordProfile'>
         <h1 className='header'>{landlordData.LandlordStats.name}</h1>
         <StatBox {...landlordData.LandlordStats} />
-        <ReviewBox reviews = {landlordData.Reviews} setExample={setExample}/>
+        <ReviewBox reviews = {landlordData.Reviews} />
       </Container>
     )
   }
 
   if(error) {
     return (
-      <div>
-        {JSON.stringify(error)}
-        Error
-      </div>
+      <Container id='landlordProfile'>
+        <h1 className='header'>{example.LandlordStats.name}</h1>
+        <StatBox {...example.LandlordStats} />
+        <ReviewBox reviews = {example.Reviews} setExample={setExample}/>
+      </Container>
     )
   }
 
