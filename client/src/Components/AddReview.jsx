@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   textArea: {
     width: '100%'
+  },
+  submitButton: {
+    padding: '10px'
   }
 }));
 
@@ -69,7 +72,7 @@ const AddReview = ({setExample}) => {
 
   })
 
-  const landlordReviewOpts = {'Friendliness': 'friendlinessRating', 'Communication': 'communcationRating', 'Responsiveness': 'responsivenessRating', 'Maintenance': 'maintenanceRating'}
+  const landlordReviewOpts = {'Friendliness': 'friendlinessRating', 'Communication': 'communicationRating', 'Responsiveness': 'responsivenessRating', 'Maintenance': 'maintenanceRating'}
   const propertyReviewOpts = {'Cleanliness': 'cleanlinessRating', 'Noise Level Rating': 'noiseLevelRating', }
   const validationSchema = yup.object({
     landlord_id: yup.string().required(),
@@ -119,125 +122,126 @@ const AddReview = ({setExample}) => {
             timeout: 500,
             }}
         >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <form onSubmit={formik.handleSubmit}>
-                <h2 id="transition-modal-title">Landlord Review</h2>
-                  {console.log(formik.errors)}
-                  <Grid 
-                    direction="column"
-                    justify="left"
-                    alignItems="left"
-                    container 
-                    spacing={3} 
-                  >
-                    <FormGroup>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={formik.values.wouldRentAgain}
-                              onChange={formik.handleChange}
-                              id="wouldRentAgain"
-                              name="wouldRentAgain"
-                              inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            />}
-                          label="Would you rent again?"
-                          labelPlacement="start"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                            checked={formik.values.transactionIssues}
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <form onSubmit={formik.handleSubmit}>
+                {console.log(formik.errors)}
+                <Grid 
+                  direction="column"
+                  justify="left"
+                  alignItems="left"
+                  container 
+                  spacing={3} 
+                >
+                  <h2>Landlord Review</h2>
+                  <FormGroup>
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={formik.values.wouldRentAgain}
                             onChange={formik.handleChange}
-                            id="transactionIssues"
-                            name="transactionIssues"
+                            id="wouldRentAgain"
+                            name="wouldRentAgain"
                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                           />}
-                          label="Did you have any transaction issues?"
-                          labelPlacement="start"
-                        />
-                      </Grid>
-                    </FormGroup>
-                    <Divider />
-                    <Grid 
-                      container 
-                      // direction="row"
-                      // justify="right"
-                      // alignItems="right"
-                      container 
-                      item xs={12} 
-                      spacing={3}
-                    >
-                      <Grid item xs={6}>
-                        <TextField
-                          label="Move In Date"
-                          type="date"
-                          name="moveInDate"
-                          id="moveInDate"
-                          onChange={formik.handleChange}
-                          defaultValue={formik.values.moveInDate}
-                          className={classes.textField}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          label="Move Out Date"
-                          type="date"
-                          name="moveOutDate"
-                          id="moveOutDate"
-                          onChange={formik.handleChange}
-                          defaultValue={formik.values.moveOutDate}
-                          className={classes.textField}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextareaAutosize 
-                        id="reviewBody"
-                        name="reviewBody"
-                        value={formik.values.reviewBody}
-                        onChange={formik.handleChange}
-                        aria-label="empty textarea" 
-                        placeholder="Comment" 
-                        rowsMin={10}
-                        className={classes.textArea}
+                        label="Would you rent again?"
+                        labelPlacement="start"
                       />
                     </Grid>
-                    <Divider />
-                    <Grid 
-                      container 
-                      // direction="row"
-                      // justify="right"
-                      // alignItems="right" 
-                      item xs={12} 
-                      spacing={3}
-                    >
-                      {Object.keys(landlordReviewOpts).map(option => (
-                        <Grid item xs={6} sm={6} key={option}>
-                          <p>{option}</p>
-                          <Rating 
-                            id={landlordReviewOpts[option]}
-                            name={landlordReviewOpts[option]}
-                            value={parseInt(formik.values[landlordReviewOpts[option]])}
-                            precision={1}
-                            onChange={formik.handleChange}
-                            onChangeActive={formik.handleChangeActive}
-                          />
-                        </Grid>
-                      ))}
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                          checked={formik.values.transactionIssues}
+                          onChange={formik.handleChange}
+                          id="transactionIssues"
+                          name="transactionIssues"
+                          inputProps={{ 'aria-label': 'secondary checkbox' }}
+                        />}
+                        label="Did you have any transaction issues?"
+                        labelPlacement="start"
+                      />
                     </Grid>
-                    <Divider />
-                    <h2>Property Review</h2>
-        
+                  </FormGroup>
+                  <Divider />
+                  <Grid 
+                    container 
+                    item xs={12} 
+                    spacing={3}
+                  >
+                    <Grid item xs={6}>
+                      <TextField
+                        label="Move In Date"
+                        type="date"
+                        name="moveInDate"
+                        id="moveInDate"
+                        onChange={formik.handleChange}
+                        defaultValue={formik.values.moveInDate}
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        label="Move Out Date"
+                        type="date"
+                        name="moveOutDate"
+                        id="moveOutDate"
+                        onChange={formik.handleChange}
+                        defaultValue={formik.values.moveOutDate}
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextareaAutosize 
+                      id="reviewBody"
+                      name="reviewBody"
+                      value={formik.values.reviewBody}
+                      onChange={formik.handleChange}
+                      aria-label="empty textarea" 
+                      placeholder="Comment" 
+                      rowsMin={10}
+                      className={classes.textArea}
+                    />
+                  </Grid>
+                  <Divider />
+                  <Grid 
+                    container 
+                    // direction="row"
+                    // justify="right"
+                    // alignItems="right"
+                    container 
+                    item xs={12} 
+                    spacing={3}
+                  >
+                    {Object.keys(landlordReviewOpts).map(option => (
+                      <Grid item xs={6} sm={6} key={option}>
+                        <p>{option}</p>
+                        <Rating 
+                          id={landlordReviewOpts[option]}
+                          name={landlordReviewOpts[option]}
+                          value={parseInt(formik.values[landlordReviewOpts[option]])}
+                          precision={1}
+                          onChange={formik.handleChange}
+                          onChangeActive={formik.handleChangeActive}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Divider />
+                  <h2>Property Review</h2>
+                  <Grid 
+                    container
+                    item xs={12} 
+                    spacing={3}
+                  >
                     {Object.keys(propertyReviewOpts).map( option => (
                       <Grid item xs={6} sm={6} key={option}>
                         <p>{option}</p>
@@ -252,14 +256,16 @@ const AddReview = ({setExample}) => {
                           />
                         </div>
                       </Grid>
-                    ))} 
-                    <Button color="primary" variant="contained" type="submit">
-                      Submit
-                    </Button>  
-                  </Grid>
-                </form>
-              </div>
-            </Fade>
+                    ))}
+                  </Grid> 
+                  <br/>
+                  <Button color="primary" variant="contained" type="submit">
+                    Submit
+                  </Button>  
+                </Grid>
+              </form>
+            </div>
+          </Fade>
         </Modal>
     </div>
   );
