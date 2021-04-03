@@ -8,6 +8,7 @@ axios.defaults.headers.common["apikey"] = process.env.ATOM_KEY;
 
 const findLandordById = async (__, args, context) => {
   console.log("function running");
+  console.log(args)
   const { id } = args;
   try {
     const data = await context.Landlords.find({ _id: id })
@@ -26,14 +27,14 @@ const findLandordById = async (__, args, context) => {
     const returnObj = {
       LandlordStats: {
         name: landlordProfile.firstName + " " + landlordProfile.lastName,
-        overallRating: landlordProfile.overallRating,
-        wouldRentAgainLevel: landlordProfile.wouldRentAgainLevel,
+        overallRating: Math.floor(landlordProfile.overallRating),
+        wouldRentAgainLevel: Math.floor(landlordProfile.wouldRentAgainLevel),
         tags: landlordProfile.tags,
-        friendlinessRating: landlordProfile.friendlinessRating,
-        communicationRating: landlordProfile.communicationRating,
-        maintenanceRating: landlordProfile.maintenanceRating,
-        responsivenessRating: landlordProfile.responsivenessRating,
-        transactionsIssue: landlordProfile.transactionIssue,
+        friendlinessRating: Math.floor(landlordProfile.friendlinessRating),
+        communicationRating: Math.floor(landlordProfile.communicationRating),
+        maintenanceRating: Math.floor(landlordProfile.maintenanceRating),
+        responsivenessRating: Math.floor(landlordProfile.responsivenessRating),
+        transactionsIssue: Math.floor(landlordProfile.transactionIssue),
       },
       PropertyStats: {
         cleanliness: 2,
@@ -43,20 +44,20 @@ const findLandordById = async (__, args, context) => {
       },
       Reviews: reviews.map((review) => ({
         landlordReview: {
-          wouldRentAgain: review.landlordReview.wouldRentAgain,
-          friendlinessRating: review.landlordReview.friendlinessRating,
-          communicationRating: review.landlordReview.communicationRating,
-          responsivenessRating: review.landlordReview.responsivenessRating,
-          maintenanceRating: review.landlordReview.maintenanceRating,
-          transactionIssues: review.landlordReview.transactionIssues,
+          wouldRentAgain: Math.floor(review.landlordReview.wouldRentAgain),
+          friendlinessRating: Math.floor(review.landlordReview.friendlinessRating),
+          communicationRating: Math.floor(review.landlordReview.communicationRating),
+          responsivenessRating: Math.floor(review.landlordReview.responsivenessRating),
+          maintenanceRating: Math.floor(review.landlordReview.maintenanceRating),
+          transactionIssues: Math.floor(review.landlordReview.transactionIssues),
         },
         propertyReview: {
           moveInDate: review.propertyReview.moveInDate,
           moveOutDate: review.propertyReview.moveOutDate,
-          cleanliness: review.propertyReview.cleanliness,
+          cleanliness: Math.floor(review.propertyReview.cleanliness),
           neighborsVibes: review.propertyReview.neighborsVibes,
           propertyIssues: review.propertyReview.propertyIssues,
-          noiseLevelRating: review.propertyReview.noiseLevelRating,
+          noiseLevelRating: Math.floor(review.propertyReview.noiseLevelRating),
         },
         reviewBody: review.reviewBody,
         user: review.reviewedBy.firstName + " " + review.reviewedBy.lastName,

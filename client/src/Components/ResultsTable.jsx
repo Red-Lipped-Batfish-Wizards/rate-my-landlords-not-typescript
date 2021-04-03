@@ -16,8 +16,8 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, city, state, street, zipcode) {
-  return { name, city, state, street, zipcode};
+function createData(name, city, state, street, zipcode, id) {
+  return { name, city, state, street, zipcode, id};
 }
 
 
@@ -35,8 +35,8 @@ export default function BasicTable(props) {
     // console.log('landlords', landlords)
     // console.log('landlords types', typeof landlords)
     // console.log('landlord data', props[landlords])
-    const {name, city, state, street, zipcode} = landlord
-    rows.push(createData(name, city, state, street, zipcode))
+    const {name, city, state, street, zipcode, id} = landlord
+    rows.push(createData(name, city, state, street, zipcode, id))
   }
 
 
@@ -60,7 +60,7 @@ export default function BasicTable(props) {
               <TableCell component="th" scope="row">
                 <Link to = {{
                   pathname: '/landlordprofile',
-                  state: row[index]
+                  state: row.id
                 }}>
                   {row.name}
                 </Link>

@@ -48,3 +48,39 @@ export const GET_ALL_LANDLORDS = gql`
   }}
 
 `
+
+export const GET_LANDLORD_BY_ID = gql`
+  query findLandlordByID($id: ID) {
+    findLandordById(id: $id) {
+      LandlordStats {
+        name
+        overallRating
+        wouldRentAgainLevel
+        tags
+        friendlinessRating
+        communicationRating
+        maintenanceRating
+        responsivenessRating
+        transactionsIssues
+      }
+      PropertyStats {
+        cleanliness
+        noiseLevel
+      }
+      Reviews {
+        user
+        landlordReview {
+          friendlinessRating
+          communicationRating
+          maintenanceRating
+        }
+        propertyReview {
+          moveInDate
+          moveOutDate
+        }
+      }
+    }
+  }
+`
+
+

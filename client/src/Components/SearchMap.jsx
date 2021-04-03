@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { credentialsObj } from '../credentials';
 
@@ -14,15 +14,10 @@ const mapStyles = {
 
 function MapContainer(props) {
   // console.log('searchMaps props', props);
-  const {street, city, state, country, latitude, longitude } = props;
-  const parameters = `${street}%${city}%${state}%${country}%`;
+  const {latitude, longitude } = props;
+  // const parameters = `${street}%${city}%${state}%${country}%`;
   console.log(latitude, longitude)
   console.log(props)
-  
-  // fetch(`https://maps.googleapis.com/maps/api/geocode/json?${parameters}`)
-  // .then(data => data.json())
-  // .then((data) => console.log(data));
-
 
   return (
     <Map

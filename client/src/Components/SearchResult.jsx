@@ -1,5 +1,5 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 // import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { GET_RESULTS} from './Utils'
@@ -8,7 +8,7 @@ import SearchMap from './SearchMap'
 
 function SearchResult(props){
   console.log(props.location.state.query)
-  const { loading, data , searchResultsError} = useQuery(
+  const { loading, data } = useQuery(
     GET_RESULTS,
     {variables: props.location.state.query}
   );
