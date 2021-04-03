@@ -4,7 +4,7 @@ const typeDefs = gql`
 
   type Query {
     hello: String 
-    findLandlordsByAddress(street: String, city: String, state: String, zipcode: String): [LandlordSearchResult] ,
+    findLandlordsByAddress(street: String, city: String, state: String, zipcode: String): AddressSearchResult,
     findLandordById(id: ID) : FullLandLordProfile,
     getProperties: String,
   }
@@ -28,6 +28,12 @@ const typeDefs = gql`
     noiseLevelRating: Int
     ): AddReviewOutput,
 
+  }
+
+  type AddressSearchResult {
+    landlordSearchResult: [LandlordSearchResult]
+    latitude: String
+    longitude: String
   }
 
   type LandlordSearchResult {

@@ -8,6 +8,7 @@ import { gql, useQuery } from '@apollo/client';
 import {GET_ALL_LANDLORDS} from './Utils'
 
 function LandLordProfile (props){
+  console.log(props)
   console.log('look here for state', typeof(props.location.state), props.location.state)
 
   const { loading, data, error } = useQuery(

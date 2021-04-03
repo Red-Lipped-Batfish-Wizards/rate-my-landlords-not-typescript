@@ -9,12 +9,16 @@ export const TEST_QUERY = gql`
 export const GET_RESULTS = gql`
   query get_landlords($street: String, $city: String, $state: String, $zipcode: String) {
     findLandlordsByAddress(street: $street, city: $city, state: $state, zipcode: $zipcode){
-      name
-      id
-      city
-      state
-      street
-      zipcode
+      landlordSearchResult {
+        name
+        id
+        city
+        state
+        street
+        zipcode
+      }
+      latitude
+      longitude
     }
   }
 `

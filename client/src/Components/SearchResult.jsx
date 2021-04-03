@@ -26,6 +26,8 @@ function SearchResult(props){
 
   if (data) {
     console.log('server response:', data)
+    const { findLandlordsByAddress: {latitude, longitude }} = data
+    console.log(latitude, longitude)
     return (
       <div>
         <h1>RATE MY LANDLORD</h1><br />
@@ -33,7 +35,7 @@ function SearchResult(props){
         {/* <div>{JSON.stringify(data)}</div> */}
         <ResultsTable {...data.findLandlordsByAddress}/>
         <br></br>
-        <SearchMap {...props.location.state.query}/>
+        <SearchMap {...props.location.state.query} latitude={latitude} longitude={longitude}/>
       </div>
     )
   }

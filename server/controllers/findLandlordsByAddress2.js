@@ -10,17 +10,27 @@ const mongoose = require('mongoose')
 
 const findLandlordsByAddress = async (__, args, context) => {
   const mainObj = {
-    queryReturnValue: [],
-    defaultReturnValue: [{
-      name: "No results found. Please try again.", 
-      id: "0", 
-      street:  "No results found. Please try again.", 
-      city:  "No results found. Please try again.", 
-      state:  "No results found. Please try again.", 
-      zipcode:  "No results found. Please try again."
-    }], 
+    queryReturnValue: {},
+    defaultReturnValue: {
+      landlordSearchResult: [{
+        name: "No results found. Please try again.", 
+        id: "0", 
+        street:  "No results found. Please try again.", 
+        city:  "No results found. Please try again.", 
+        state:  "No results found. Please try again.", 
+        zipcode:  "No results found. Please try again.",
+      }], 
+      latitude: '', 
+      longitude: ''
+    }, 
+    address: {
+      street: '', 
+      city: '',
+      state: '', 
+      zipcode: '',
+    },
     landlords: [], 
-    landlordId: "", 
+    landlordIds: [], 
     queryResponse: ""
   }
 
@@ -32,16 +42,23 @@ const findLandlordsByAddress = async (__, args, context) => {
     const res = await axios.get(queryURL, {
       headers: {
         accept: "application/json", 
-        apikey: "6d58671a70c7abeee02107555d1a8a62",
+        apikey: process.env.ATOM_KEY_2,
       },
       params: {
         address1: street, 
         address2: city + ', ' + state
       }
     })
-    if(res.data.status.code === 0 && res.data.property.length > 0) 
+    if(res.data.status.code === 0 && res.data.property.length > 0)  {
+      mainObj.queryReturnValue.latitude = res.data.property[0].location.latitude
+      mainObj.queryReturnValue.longitude = res.data.property[0].location.longitude
+      const { address } = res.data.property[0]
+      mainObj.address.street = address.line1
+      mainObj.address.city = address.locality
+      mainObj.address.state = address.countrySubd
+      mainObj.address.zipcode = address.postal1
       return res.data.property
-    else 
+    }else 
       throw {message: 'ATTOM API query unsuccessful', data: res.data} 
   }
 
@@ -58,8 +75,8 @@ const findLandlordsByAddress = async (__, args, context) => {
           const { firstNameAndMi, lastName} = property.assessment.owner[`owner${i}`]
 
           const newLandlordObj = {
-            firstName: firstNameAndMi, 
-            lastName: lastName,
+            firstName: firstNameAndMi.split(' ')[0].trim(), 
+            lastName: lastName.trim(),
             overallRating: generateRandomNum(),
             wouldRentAgainLevel:Math.floor(Math.random() * 101),
             tags: [], 
@@ -83,7 +100,10 @@ const findLandlordsByAddress = async (__, args, context) => {
     try {
       const data =  await Promise.allSettled(landlordList.map(async landlord =>  {
           const res = await context.Landlords.findOneAndUpdate(
-            {"firstName": landlord.firstName || 'N/A', "lastName": landlord.lastName}, 
+            {
+              firstName: landlord.firstName || 'N/A', 
+              lastName: landlord.lastName,
+            }, 
             {$setOnInsert: landlord}, 
             {upsert: true, new: true, useFindAndModify: false}, 
           ).exec()
@@ -96,10 +116,11 @@ const findLandlordsByAddress = async (__, args, context) => {
     }
   }
 
-  const generateQueryReturnValue = (databaseResponse, queryResponse) => {
+  const generateLandlordList = (databaseResponse, queryResponse) => {
     const { line1, locality, countrySubd, postal1 } = queryResponse[0].address
     return databaseResponse.map(landlord => {
       const { value } = landlord 
+      mainObj.landlordIds.push(value._id)
       return {
         name: value.firstName + " " + value.lastName,
         id: value._id, 
@@ -111,18 +132,23 @@ const findLandlordsByAddress = async (__, args, context) => {
     })
   } 
 
+  const addPropertyToDB = (landlordIds, address) => {
+    console.log('adding property')
+    console.log(landlordIds, address)
+  }
+
   try{ 
     mainObj.queryResponse = await fetchAttomApi(args)
     mainObj.landlords = generateLandlordSchema(mainObj.queryResponse)
     const databaseResponse = await addLandlordToDB(mainObj.landlords, context)
-    mainObj.queryReturnValue = generateQueryReturnValue(databaseResponse, mainObj.queryResponse)
-    return mainObj.queryReturnValue.length > 0 ? mainObj.queryReturnValue : mainObj.defaultReturnValue
+    mainObj.queryReturnValue.landlordSearchResult = generateLandlordList(databaseResponse, mainObj.queryResponse)
+    return mainObj.queryReturnValue.landlordSearchResult.length > 0 ? mainObj.queryReturnValue : mainObj.defaultReturnValue
   }catch(err) {
     console.log('error', err)
     return mainObj.defaultReturnValue
   }finally{
-    if(mainObj.queryReturnValue.length > 0) {
-      
+    if(mainObj.queryReturnValue.landlordSearchResult.length > 0) {
+      addPropertyToDB(mainObj.landlordIds, mainObj.address)
     }
     delete mainObj
   }

@@ -56,7 +56,7 @@ Reviews: [
   },
 ]
 */
-  console.log('Review Box props', props);
+  // console.log('Review Box props', props);
   const {reviews} = props;
 
   const ratingMap = {
@@ -83,7 +83,7 @@ Reviews: [
               {/* <h4 style={{ margin: 0, textAlign: "left" }}>{review.user}</h4> */}
               {Object.keys(review.landlordReview).map(landlordReviewProps => (
                 <div>{ratingMap[landlordReviewProps]}:   
-                <Rating name="size-small" size="small" defaultValue={review.landlordReview[landlordReviewProps]} />
+                <Rating name="size-small" size="small" defaultValue={review.landlordReview[landlordReviewProps]} precision={0.1}/>
                 </div>
               ))}
             </Grid>

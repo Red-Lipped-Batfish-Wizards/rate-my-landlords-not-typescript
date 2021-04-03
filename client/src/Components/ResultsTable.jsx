@@ -26,14 +26,16 @@ function createData(name, city, state, street, zipcode) {
 export default function BasicTable(props) {
   // console.log('props',props)
   // console.log('type', typeof props)
+  // console.log(props)
+  const { landlordSearchResult } = props
 
   const rows = []
 
-  for (let landlords in props) {
+  for (let landlord of landlordSearchResult) {
     // console.log('landlords', landlords)
     // console.log('landlords types', typeof landlords)
     // console.log('landlord data', props[landlords])
-    const {name, city, state, street, zipcode} = props[landlords]
+    const {name, city, state, street, zipcode} = landlord
     rows.push(createData(name, city, state, street, zipcode))
   }
 
