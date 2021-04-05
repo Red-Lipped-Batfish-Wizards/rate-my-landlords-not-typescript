@@ -55,7 +55,6 @@ function SearchBar (){
           </Paper>
           <h1>Hi, {username}!</h1>
           <h2>Enter your city, zip code, or address to get started</h2>
-
             <GooglePlacesAutocomplete 
               apiKey={GOOGLE_API_KEY}
               selectProps={{value,onChange: setValue}}
