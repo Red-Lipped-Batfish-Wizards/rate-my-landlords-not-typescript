@@ -83,8 +83,7 @@ function SearchBar (){
         <form> */}
           {/* <input type = "search" id="search2" ref={search2Ref} onChange={handleAddressSearch}/> */}
           <GooglePlacesAutocomplete 
-            // apiKey={process.env.GOOGLE_API_KEY}
-            apiKey="AIzaSyBopeNaNuJXhcVfRvUrjnR1UVm0uRmdx3Y"
+            apiKey={process.env.GOOGLE_API_KEY}
             selectProps={{value,onChange: setValue}}
             autocompletionRequest={{componentRestrictions: {country: ['us']}}}
           />
