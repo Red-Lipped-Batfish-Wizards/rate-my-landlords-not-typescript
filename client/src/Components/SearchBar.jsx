@@ -93,5 +93,3 @@ function SearchBar (){
 }
 
 export default SearchBar
-
-//AIzaSyBopeNaNuJXhcVfRvUrjnR1UVm0uRmdx3Y
