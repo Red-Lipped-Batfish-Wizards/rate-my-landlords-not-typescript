@@ -4,16 +4,21 @@ const mongoose = require('mongoose')
 
 /*-------------------------------------COMMON HEADERS-------------------------------------*/
 axios.defaults.headers.common['accept'] = 'application/json'
-axios.defaults.headers.common['apikey'] = process.env.ATOM_KEY
+axios.defaults.headers.common['apikey'] = process.env.ATOM_KEY_3
 /*-------------------------------------COMMON HEADERS-------------------------------------*/
 
 
 const findLandlordsByAddress = async (__, args, context) => {
-  let propertyList = [{name: "No results found", id: "0", street:  "No results found", city:  "No results found", state:  "No results found", zipcode:  "No results found"}]
+  let propertyList = {
+    landlordList: [{name: "No results found", id: "0", street:  "No results found", city:  "No results found", state:  "No results found", zipcode:  "No results found"}],
+    latitude: '', 
+    longitude: ''
+  }
   let mainAddress
   let landlordId
+  console.log('finding')
   try {
-    data = await fetchPropertiesByAddress(args)
+    const data = await fetchPropertiesByAddress(args)
     if(data?.property) {
       const { property } = data
       const { address } = property[0]
@@ -34,8 +39,10 @@ const findLandlordsByAddress = async (__, args, context) => {
   }
 }
 
+
 //Fetch data from API to get owner(s) name(s)
-const fetchPropertiesByAddress = async (args) => {
+const fetchPropertiesByAddress = async (args, propertyList) => {
+  console.log('fetching')
   const {street, city, state} = args
   const url = process.env.ATOM_URL_FULL_ADDRESS 
   const res = await axios.get(url, {
@@ -43,18 +50,22 @@ const fetchPropertiesByAddress = async (args) => {
       address1: street, 
       address2: city + ' ' + state
     }
-  })
+  })  
 
-  return res.data
+  return res.data || propertyList
 }
 
-const getMultipleOwnersandGenerateSchema = (propertyData) => {
+const getMultipleOwnersandGenerateSchema = async (propertyData) => {
   const landlordList = []
+  console.log(propertyData)
 
   const generateLandlordSchema = ({name}) => {
     const splitName = name.trim().split(' ')
     const firstName = (splitName[0] || ' ')
     const lastName = (splitName[splitName.length - 1] || ' ')
+
+    // await context.Properties.find({streetAddress1: })
+
     return {
       firstName, 
       lastName,
@@ -84,17 +95,18 @@ const getMultipleOwnersandGenerateSchema = (propertyData) => {
 }
 
 const insertLandlords = async (landlordList, context, address) => {
+  console.log('inserting landlords')
   try {
-    const data =  await Promise.allSettled(
+    const data =  []
       landlordList.map(async landlord =>  {
         const res = context.Landlords.findOneAndUpdate(
                       {"firstName": landlord.firstName, "lastName": landlord.lastName}, 
                       {$setOnInsert: landlord}, 
-                      {upsert: true, new: true}, 
+                      {upsert: true, new: true, useFindAndModify: false}, 
                     ).exec()
-        return res
-      }))
-
+        data.push(res)
+      })
+      console.log(data)
       return data
   }catch(err) {
     return [{name: "No results found", id: "0", street:  "No results found", city:  "No results found", state:  "No results found", zipcode:  "No results found"}]
@@ -103,7 +115,7 @@ const insertLandlords = async (landlordList, context, address) => {
 
 const generateReturnSchema = (databaseInsert, address) => {
   const { line1, locality, countrySubd, postal1 } = address
-  return databaseInsert.map(landlord => {
+  const landlordSearchResult =  databaseInsert.map(landlord => {
     const { value } = landlord 
     return {
       name: value.firstName + " " + value.lastName,
@@ -114,6 +126,12 @@ const generateReturnSchema = (databaseInsert, address) => {
       zipcode: postal1
     }
   })
+
+  return {
+    landlordSearchResult, 
+    longitude: '', 
+    latitude: ''
+  }
 }
 
 
@@ -138,10 +156,10 @@ const generatePropertySchema = (address, landlordId) => {
 }
 
 const insertProperties = async (schema, context) => {
-  const property =  await context.RealEstateProperty.findOneAndUpdate(
+  const property =  await context.Properties.findOneAndUpdate(
     {address: schema.address}, 
     {$setOnInsert: schema}, 
-    {upsert: true, new: true}, 
+    {upsert: true, new: true, useFindAndModify: false}, 
   ).exec()
   return property
 }

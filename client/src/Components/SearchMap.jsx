@@ -1,42 +1,45 @@
-import React, { Component } from 'react';
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import React from 'react';
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { credentialsObj } from '../credentials';
 
-const { GOOGLE_MAP_API_KEY } = credentialsObj;
+const {  GOOGLE_API_KEY } = credentialsObj;
 
 const mapStyles = {
-  width: '50%',
-  margin: 'auto'
-  // display: 'flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
+  width: '86%',
+  height: '86%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // margin: 'auto'
 };
 
 function MapContainer(props) {
-  console.log('searchMaps props', props);
-  const {street, city, state, country} = props;
-  const parameters = `${street}%${city}%${state}%${country}%`;
-  
-  // fetch(`https://maps.googleapis.com/maps/api/geocode/json?${parameters}`)
-  // .then(data => data.json())
-  // .then((data) => console.log(data));
-
+  // console.log('searchMaps props', props);
+  const {latitude, longitude } = props;
+  // const parameters = `${street}%${city}%${state}%${country}%`;
+  console.log(latitude, longitude)
+  console.log(props)
 
   return (
-    <Map
-      google={props.google}
-      zoom={14}
-      style={mapStyles}
-      initialCenter={
-        {
-          lat: -1.2884,
-          lng: 36.8233
+    // <div style={{height: '80%', width: '80%', alignContent: 'center'}}>
+      <Map
+        resetBoundsOnResize={true}
+        google={props.google}
+        zoom={14}
+        style={mapStyles}
+        initialCenter={
+          {
+            lat: latitude,
+            lng: longitude
+          }
         }
-      }
-    />
+      >
+        <Marker position={{lat: latitude, lng: longitude}}/>
+      </Map>
+    // </div>
   );
 }
 
 export default GoogleApiWrapper({
-  apiKey: GOOGLE_MAP_API_KEY,
+  apiKey: GOOGLE_API_KEY,
 })(MapContainer);

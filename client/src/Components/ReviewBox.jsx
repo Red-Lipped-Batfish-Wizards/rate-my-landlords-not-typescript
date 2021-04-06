@@ -11,52 +11,8 @@ const imgLink =
 
 
 export default function ReviewBox(props) {
-/*
-Reviews: [
-  {
-    landlordReview: {
-      wouldRentAgain: true,
-      friendlinessRating: 3.0,
-      communicationRating: 4.0, 
-      responsivenessRating: 3,
-      maintenanceRating: 4,
-      transactionIssues: false
-    },
-    propertyReview: {
-      moveInDate: "2/3/19",
-      moveOutDate: "9/10/19",
-      cleanliness: 3,
-      neighborsVibes: ["great, quiet, noisy, everything"],
-      propertyIssues: ["squeky floorsss squeek suehfnp9ieo"],
-      noiseLevelRating: 1,
-      user: "user1",
-    },
-    reviewBody: 'this place sucks',
-    user: 'user123'
-  },
-  {
-    landlordReview: {
-      wouldRentAgain: true,
-      friendlinessRating: 3,
-      communicationRating: 2, 
-      responsivenessRating: 3,
-      maintenanceRating: 4,
-      transactionIssues: true,
-    },
-    propertyReview: {
-      moveInDate: "2/3/20",
-      moveOutDate:  "9/10/20",
-      cleanliness: 4,
-      neighborsVibes: ["great, quiet, noisy, everything"],
-      propertyIssues: ["squeky floorsss squeek suehfnp9ieo"],
-      noiseLevelRating: 2,
-    },
-    reviewBody: 'this place rocks!!!',
-    user: 'user456'
-  },
-]
-*/
-  console.log('Review Box props', props);
+
+  // console.log('Review Box props', props);
   const {reviews} = props;
 
   const ratingMap = {
@@ -83,7 +39,7 @@ Reviews: [
               {/* <h4 style={{ margin: 0, textAlign: "left" }}>{review.user}</h4> */}
               {Object.keys(review.landlordReview).map(landlordReviewProps => (
                 <div>{ratingMap[landlordReviewProps]}:   
-                <Rating name="size-small" size="small" defaultValue={review.landlordReview[landlordReviewProps]} />
+                <Rating name="size-small" size="small" defaultValue={review.landlordReview[landlordReviewProps]} precision={0.1}/>
                 </div>
               ))}
             </Grid>

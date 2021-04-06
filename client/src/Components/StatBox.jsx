@@ -45,7 +45,7 @@ export default function StatBox(props) {
   } = props;
 
   const ratingsObj = {
-    Overall: overallRating,
+    // Overall: overallRating,
     Friendliness: friendlinessRating,
     Communication: communicationRating,
     Maintenance: maintenanceRating,
@@ -55,11 +55,17 @@ export default function StatBox(props) {
     <Grid container className={classes.root} spacing={2}>
       <Grid item xs={12}>
         <Grid container justify="flex-start" spacing={2}>
+          <Grid key = {0} item>
+            <Paper className={classes.paper}>
+              <b>Overall Rating</b>
+              {/* <br></br> */}
+              <Rating name="half-rating" defaultValue={(Math.round(overallRating * 100) / 100).toFixed(1)} precision={0.5} />
+            </Paper>
+          </Grid>
           {Object.keys(ratingsObj).map((value) => (
             <Grid key={value} item>
               {/* <Paper className={classes.paper}>{ratingsObj[value]}</Paper> */}
               <Paper className={classes.paper}>
-                
                 {`${value}`}
                 <br></br>
                 <Rating name="half-rating" defaultValue={(Math.round(ratingsObj[value] * 100) / 100).toFixed(1)} precision={0.5} />
